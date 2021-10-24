@@ -12,7 +12,7 @@ class AtendimentoModel {
 
     const validacoes = [
       {
-        nome: '',
+        nome: 'data',
         valido: isDataValida,
         mensagem: 'Campo data deve ser maior ou igual a data atual'
       },
