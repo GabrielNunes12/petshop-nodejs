@@ -74,6 +74,16 @@ class AtendimentoModel {
       }
     });
   }
+  removeAtendimento(id, res) {
+    const sql = 'DELETE FROM atendimentos WHERE id=?';
+    connection.query(sql, id, (error, result) => {
+      if(error) {
+        res.status(400).json(error);
+      } else {
+        res.status(200).json({id});
+      }
+    })
+  }
 }
 
 module.exports = new AtendimentoModel;

@@ -20,4 +20,9 @@ module.exports = (app) => {
     const values = req.body;
     atendimentoModel.changeAtendimento(id, values, res);
   })
+
+  app.delete('/atendimentos/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    atendimentoModel.removeAtendimento(id, res);
+  })
 }
