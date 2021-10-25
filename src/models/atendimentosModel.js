@@ -61,6 +61,29 @@ class AtendimentoModel {
       }
     })
   }
+  changeAtendimento(id, values, res) {
+    if(values.data) {
+      values.data = moment(values.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
+    }
+    const sql = 'UPDATE atendimentos SET ? WHERE id=?';
+    connection.execute(sql, [values, id], (error, result) => {
+      if(error) {
+        res.status(400).json(error);
+      } else {
+        res.status(200).json(result);
+      }
+    });
+  }
+  removeAtendimento(id, res) {
+    const sql = 'DELETE FROM atendimentos WHERE id=?';
+    connection.query(sql, id, (error, result) => {
+      if(error) {
+        res.status(400).json(error);
+      } else {
+        res.status(200).json({id});
+      }
+    })
+  }
 }
 
 module.exports = new AtendimentoModel;

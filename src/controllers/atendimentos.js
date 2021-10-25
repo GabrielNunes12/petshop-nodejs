@@ -14,4 +14,15 @@ module.exports = (app) => {
     const atendimento = req.body;
     atendimentoModel.add(atendimento, res);
   });
+
+  app.patch('/atendimentos/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const values = req.body;
+    atendimentoModel.changeAtendimento(id, values, res);
+  })
+
+  app.delete('/atendimentos/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    atendimentoModel.removeAtendimento(id, res);
+  })
 }
