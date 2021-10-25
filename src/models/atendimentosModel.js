@@ -40,6 +40,27 @@ class AtendimentoModel {
       })
     }
   }
+  lista(res) {
+    const sql = 'SELECT * FROM atendimentos';
+    connection.query(sql, (error,result) => {
+      if(error) {
+        res.status(400).json(error);
+      } else {
+        res.status(200).json(result);
+      }
+    })
+  }
+  findById(idAtendimento, res) {
+    const sql = `SELECT * FROM atendimentos WHERE id=${idAtendimento}`;
+    connection.query(sql, (error, result) => {
+      const atendimento = result[0];
+      if(error) {
+        res.status(400).json(error);
+      } else {
+        res.status(200).json(atendimento);
+      }
+    })
+  }
 }
 
 module.exports = new AtendimentoModel;
