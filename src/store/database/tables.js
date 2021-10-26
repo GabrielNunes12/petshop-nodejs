@@ -13,7 +13,7 @@ class Tables {
       if(error) {
         console.log(error);
       } else {
-        console.log('Atendimento Table was created successfully')
+        console.log('Atendimento Table was created successfully');
       }
     });
   }
