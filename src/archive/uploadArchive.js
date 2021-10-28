@@ -29,6 +29,6 @@ module.exports = (imagePath, archiveName, imageCreated ) => {
     const newPathImage = `${path.dirname(__dirname)}/assets/${archiveName}${extensionName}`;
     fs.createReadStream(imagePath)
       .pipe(fs.createWriteStream(newPathImage))
-      .on('finish', () => { imageCreated(newPathImage) });
+      .on('finish', () => { imageCreated(false,newPathImage) });
   }
 }
