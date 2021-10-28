@@ -20,8 +20,15 @@ fs.readFile(`${path.dirname(__dirname)}/assets/Grooming.jpg`, (erro, buffer) => 
 const fs = require('fs'); 
 const path = require('path'); 
 module.exports = (imagePath, archiveName, imageCreated ) => {
-  const newPathImage = `${path.dirname(__dirname)}/assets/${archiveName}`;
-  fs.createReadStream(imagePath)
-    .pipe(fs.createWriteStream(newPathImage))
-    .on('finish', () => { imageCreated(newPathImage) });
+  const validTypes = [ 'jpg', 'png', 'jpeg' ];
+  const extensionName = path.extname(imagePath);
+  const isValidType = validTypes.indexOf(extensionName.substring(1));
+  if(isValidType === -1) {
+    console.log('Invalid image type');
+  } else {
+    const newPathImage = `${path.dirname(__dirname)}/assets/${archiveName}${extensionName}`;
+    fs.createReadStream(imagePath)
+      .pipe(fs.createWriteStream(newPathImage))
+      .on('finish', () => { imageCreated(newPathImage) });
+  }
 }
