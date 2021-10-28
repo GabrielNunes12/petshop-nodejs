@@ -19,7 +19,9 @@ fs.readFile(`${path.dirname(__dirname)}/assets/Grooming.jpg`, (erro, buffer) => 
 
 const fs = require('fs'); 
 const path = require('path'); 
-
-fs.createReadStream(`${path.dirname(__dirname)}/assets/Grooming.jpg`)
-  .pipe(fs.createWriteStream(`${path.dirname(__dirname)}/assets/salcichaPeludinha.jpg`))
-  .on('finish', () => { console.log('Image created') });
+module.exports = (imagePath, archiveName, imageCreated ) => {
+  const newPathImage = `${path.dirname(__dirname)}/assets/${archiveName}`;
+  fs.createReadStream(imagePath)
+    .pipe(fs.createWriteStream(newPathImage))
+    .on('finish', () => { imageCreated(newPathImage) });
+}

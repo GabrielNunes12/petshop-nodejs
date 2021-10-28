@@ -20,7 +20,7 @@ class Tables {
   }
   createPet() {
     const sql = `CREATE TABLE IF NOT EXISTS 
-      Pets(id int NOT NULL AUTO_INCREMEN, nome varchar(50), imagem varchar(200) PRIMARY KEY (id))`;
+      Pets(id int NOT NULL AUTO_INCREMEN, name varchar(50), imagem varchar(200) PRIMARY KEY (id))`;
     this.connection.query(sql, error => {
       if(error) {
         console.log(error);
