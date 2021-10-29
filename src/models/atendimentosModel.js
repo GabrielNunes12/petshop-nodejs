@@ -2,6 +2,8 @@ const moment = require('moment');
 
 const connection = require('../store/connection');
 
+const axios = require('axios');
+
 class AtendimentoModel {
   add(atendimento, res) {
     const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS');
@@ -52,11 +54,16 @@ class AtendimentoModel {
   }
   findById(idAtendimento, res) {
     const sql = `SELECT * FROM atendimentos WHERE id=${idAtendimento}`;
-    connection.query(sql, (error, result) => {
+    connection.query(sql, async (error, result) => {
       const atendimento = result[0];
+      const cpf = atendimento.cliente;
       if(error) {
         res.status(400).json(error);
       } else {
+        const { data } = await axios.get(`http://localhost:8082/${cpf}`)
+        
+        atendimento.cliente = data;
+
         res.status(200).json(atendimento);
       }
     })
