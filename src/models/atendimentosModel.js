@@ -4,6 +4,8 @@ const connection = require('../store/connection');
 
 const axios = require('axios');
 
+const repositories = require('../repositories/atendimentos');
+
 class AtendimentoModel {
   add(atendimento, res) {
     const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS');
@@ -32,14 +34,11 @@ class AtendimentoModel {
       res.status(400).json(erros);
     } else {
       const atendimentoDatado = {...atendimento, dataCriacao, data};
-      const sql = 'INSERT INTO atendimentos SET ?'
-      connection.query(sql, atendimentoDatado, (error,result) => {
-        if(error) {
-          res.status(400).json(error);
-        } else {
-          res.status(201).json(result);
-        }
-      })
+      
+      return repositories.add(atendimentoDatado).then((resultados) => {
+        const id = resultados.insertId;
+        return { ...atendimento, id };
+      });
     }
   }
   lista(res) {
