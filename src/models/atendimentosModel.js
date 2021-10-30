@@ -31,7 +31,7 @@ class AtendimentoModel {
     const isValido = erros.length;
 
     if(isValido) {
-      res.status(400).json(erros);
+      return new Promise((resolve, reject) => reject(erros));
     } else {
       const atendimentoDatado = {...atendimento, dataCriacao, data};
       
