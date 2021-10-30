@@ -7,27 +7,39 @@ const axios = require('axios');
 const repositories = require('../repositories/atendimentos');
 
 class AtendimentoModel {
-  add(atendimento, res) {
-    const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS');
-    const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
+  constructor() {
+    this.isDataValida = ({date, createdDate}) => moment(date).isSameOrAfter(createdDate);
+    this.isClienteValido = (length) => length >= 5;
 
-    const isDataValida = moment(data).isSameOrAfter(dataCriacao);
-    const isClienteValido = atendimento.cliente.length >= 5;
+    this.validation = params => this.validacoes.filter(fields => {
+      const { name } = fields;
+      const parameter = params[name];
+      return !fields.valido(parameter);
+    });
 
-    const validacoes = [
+    this.validacoes = [
       {
         nome: 'data',
-        valido: isDataValida,
+        valido: this.isDataValida,
         mensagem: 'Campo data deve ser maior ou igual a data atual'
       },
       {
         nome: 'cliente',
-        valido: isClienteValido,
+        valido: this.isClienteValido,
         mensagem: 'Cliente deve ter pelo menos 5 caracteres'
       }
     ]
+  }
+  add(atendimento, res) {
+    const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS');
+    const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
 
-    const erros = validacoes.filter(validacao => !validacao.valido);
+    const parameters = {
+      date: { date, dateCreated },
+      client: { length: atendimento.cliente.length }
+    }
+
+    const erros = this.validation(parameters);
     const isValido = erros.length;
 
     if(isValido) {
@@ -42,11 +54,7 @@ class AtendimentoModel {
     }
   }
   lista() {
-    return repositories.list().then(result => {
-      return result;
-    }).catch((err) => {
-      return new Promise((resolve, reject) => reject(err));
-    });
+    return repositories.list()
   }
   findById(idAtendimento, res) {
     const sql = `SELECT * FROM atendimentos WHERE id=${idAtendimento}`;
