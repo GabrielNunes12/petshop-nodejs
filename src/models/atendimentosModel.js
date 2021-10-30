@@ -41,15 +41,12 @@ class AtendimentoModel {
       });
     }
   }
-  lista(res) {
-    const sql = 'SELECT * FROM atendimentos';
-    connection.query(sql, (error,result) => {
-      if(error) {
-        res.status(400).json(error);
-      } else {
-        res.status(200).json(result);
-      }
-    })
+  lista() {
+    return repositories.list().then(result => {
+      return result;
+    }).catch((err) => {
+      return new Promise((resolve, reject) => reject(err));
+    });
   }
   findById(idAtendimento, res) {
     const sql = `SELECT * FROM atendimentos WHERE id=${idAtendimento}`;

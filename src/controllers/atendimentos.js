@@ -2,7 +2,7 @@ const atendimentoModel = require('../models/atendimentosModel');
 module.exports = (app) => {
   
   app.get('/atendimentos', (req, res) => {
-    return atendimentoModel.lista(res);
+    return atendimentoModel.lista();
   });
 
   app.get('/atendimentos/:id', (req, res) => {
